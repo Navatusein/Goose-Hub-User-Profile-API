@@ -40,7 +40,7 @@ namespace UserProfileAPI.Dto
         /// <summary>
         /// Gets or Sets HistoryList
         /// </summary>
-        public string HistoryList { get; set; } = null!;
+        public List<HistoryDto> HistoryList { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets IsPrivate
