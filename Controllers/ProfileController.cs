@@ -16,6 +16,8 @@ namespace UserProfileAPI.Controllers
     [ApiController]
     public class ProfileController : ControllerBase
     {
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<ProfileController>();
+
         /// <summary>
         /// Get UserProfile
         /// </summary>

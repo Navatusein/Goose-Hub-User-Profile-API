@@ -1,4 +1,5 @@
 ﻿using Amazon.Auth.AccessControlPolicy;
+using Amazon.SecurityToken.SAML;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,8 @@ namespace UserProfileAPI.Controllers
     [ApiController]
     public class WishListController : ControllerBase
     {
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<WishListController>();
+
         /// <summary>
         /// Get WishList By Id
         /// </summary>
