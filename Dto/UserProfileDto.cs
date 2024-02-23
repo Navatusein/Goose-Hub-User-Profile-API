@@ -40,7 +40,13 @@ namespace UserProfileAPI.Dto
         /// <summary>
         /// Gets or Sets HistoryList
         /// </summary>
-        public string HistoryList { get; set; } = null!;
+        public List<HistoryDto> HistoryList { get; set; } = null!;
+
+
+        /// <summary>
+        /// Gets or Sets NotificationList
+        /// </summary>
+        public List<NotificationDto> NotificationList { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets IsPrivate
@@ -62,6 +68,7 @@ namespace UserProfileAPI.Dto
             sb.Append("  IconUrl: ").Append(IconUrl).Append("\n");
             sb.Append("  WishLists: ").Append(WishLists).Append("\n");
             sb.Append("  HistoryList: ").Append(HistoryList).Append("\n");
+            sb.Append("  NotificationList: ").Append(NotificationList).Append("\n");
             sb.Append("  IsPrivate: ").Append(IsPrivate).Append("\n");
             sb.Append("}\n");
             return sb.ToString();

@@ -16,17 +16,34 @@ namespace UserProfileAPI.Controllers
     [ApiController]
     public class ProfileController : ControllerBase
     {
+        private static Serilog.ILogger Logger => Serilog.Log.ForContext<ProfileController>();
+
         /// <summary>
-        /// Get UserProfile By Id
+        /// Get UserProfile
         /// </summary>
-        /// <param name="id">Profile Id</param>
+        /// <response code="200">OK</response>
+        /// <response code="401">Unauthorized</response>
+        [HttpGet]
+        [Authorize(Roles = "User,Admin")]
+        [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
+        public async Task<IActionResult> GetProfile()
+        {
+
+            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(200, default(UserProfileDto));
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get UserProfile Preview By Id
+        /// </summary>
         /// <response code="200">OK</response>
         /// <response code="404">Not Found</response>
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         [AllowAnonymous]
-        [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
-        [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
+        [SwaggerResponse(statusCode: 200, type: typeof(UserProfilePreviewDto), description: "OK")]
+        [SwaggerResponse(statusCode: 404, type: typeof(UserProfilePreviewDto), description: "OK")]
         public async Task<IActionResult> GetProfileId([FromRoute(Name = "id")] string id)
         {
 
@@ -41,21 +58,16 @@ namespace UserProfileAPI.Controllers
         /// <summary>
         /// Create UserProfile
         /// </summary>
-        /// <param name="userProfileDto"></param>
-        /// <response code="200">OK</response>
+        /// <response code="201">Created</response>
+        /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         [HttpPost]
-        [Authorize(Roles = "User,Admin")]
-        [SwaggerResponse(statusCode: 200, type: typeof(ErrorDto), description: "OK")]
-        [SwaggerResponse(statusCode: 401, type: typeof(ErrorDto), description: "Unauthorized")]
-        [SwaggerResponse(statusCode: 403, type: typeof(ErrorDto), description: "Forbidden")]
-        public async Task<IActionResult> PostProfile([FromBody] UserProfileDto userProfileDto)
+        [Authorize(Roles = "Service")]
+        [SwaggerResponse(statusCode: 201, type: typeof(string), description: "Created")]
+        public async Task<IActionResult> PostProfile()
         {
-
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(ErrorDto));
-            //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403, default(ErrorDto));
+            // return StatusCode(201, default(string));
 
             throw new NotImplementedException();
         }
@@ -63,23 +75,18 @@ namespace UserProfileAPI.Controllers
         /// <summary>
         /// Update UserProfile
         /// </summary>
-        /// <param name="id">Profile Id</param>
         /// <param name="userProfileDto"></param>
         /// <response code="200">OK</response>
-        /// <response code="403">Forbidden</response>
+        /// <response code="401">Unauthorized</response>
         [HttpPut]
-        [Route("{id}")]
         [Authorize(Roles = "User,Admin")]
         [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
-        [SwaggerResponse(statusCode: 401, type: typeof(ErrorDto), description: "Unauthorized")]
-        [SwaggerResponse(statusCode: 403, type: typeof(ErrorDto), description: "Forbidden")]
-        public async Task<IActionResult> PutProfileId([FromRoute(Name = "id")] string id, [FromBody] UserProfileDto userProfileDto)
+        public async Task<IActionResult> PutProfileId([FromBody] UserProfileDto userProfileDto)
         {
+            var userId = User.Claims.First(x => x.Type == "UserId").ToString();
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(UserProfileDto));
-            //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403, default(ErrorDto));
 
             throw new NotImplementedException();
         }
