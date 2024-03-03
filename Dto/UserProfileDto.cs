@@ -33,6 +33,12 @@ namespace UserProfileAPI.Dto
         public string IconUrl { get; set; } = null!;
 
         /// <summary>
+        /// Gets or Sets IconId
+        /// </summary>
+        [Required]
+        public string IconId { get; set; } = null!;
+
+        /// <summary>
         /// Gets or Sets WishLists
         /// </summary>
         public List<WishListDto> WishLists { get; set; } = null!;
