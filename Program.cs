@@ -7,6 +7,9 @@ using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 using System.Text;
+using UserProfileAPI.AppMapping;
+using MassTransit;
+using UserProfileAPI.MassTransit.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,8 +83,35 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Configure Automapper
+builder.Services.AddAutoMapper(typeof(AppMappingService));
+builder.Services.AddTransient<ImageUrlResolver>();
+
+// Add Minio Service
+builder.Services.AddSingleton<MinioService>();
+
 // Add MongoDbConnectionService
 builder.Services.AddSingleton<MongoDbConnectionService>();
+builder.Services.AddSingleton<UserProfileService>();
+
+builder.Services.AddMassTransit(options =>
+{
+    options.AddConsumer<SendNotificationConsumer>();
+    options.AddConsumer<SendNotificationContentConsumer>();
+
+    options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("user-profile-api", false));
+
+    options.UsingRabbitMq((context, config) =>
+    {
+        config.Host(builder.Configuration.GetSection("RabbitMq:Host").Get<string>(), "/", host =>
+        {
+            host.Username(builder.Configuration.GetSection("RabbitMq:Username").Get<string>());
+            host.Password(builder.Configuration.GetSection("RabbitMq:Password").Get<string>());
+        });
+
+        config.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 

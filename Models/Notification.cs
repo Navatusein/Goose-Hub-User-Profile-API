@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UserProfileAPI.Dto
+namespace UserProfileAPI.Models
 {
     /// <summary>
     /// 
     /// </summary>
-    public class NotificationDto
+    public class Notification
     {
         /// <summary>
         /// Gets or Sets Message

@@ -1,8 +1,7 @@
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 
 namespace UserProfileAPI.Dto
-{ 
+{
     /// <summary>
     /// 
     /// </summary>
@@ -15,7 +14,7 @@ namespace UserProfileAPI.Dto
         public string Id { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets Messages
+        /// Gets or Sets Message
         /// </summary>
         [Required]
         public string Message { get; set; } = null!;
@@ -27,18 +26,26 @@ namespace UserProfileAPI.Dto
         public string Code { get; set; } = null!;
 
         /// <summary>
-        /// Returns the string presentation of the object
+        /// 
         /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
+        /// <param name="message"></param>
+        /// <param name="code"></param>
+        public ErrorDto(string message, string code)
         {
-            var sb = new StringBuilder();
-            sb.Append("class ErrorDto {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  Messages: ").Append(Message).Append("\n");
-            sb.Append("  Code: ").Append(Code).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
+            Id = Guid.NewGuid().ToString();
+            Message = message;
+            Code = code;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ErrorDto()
+        {
+            Id = Guid.NewGuid().ToString();
+            Message = string.Empty;
+            Code = string.Empty;
+        }
+
     }
 }

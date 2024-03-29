@@ -1,4 +1,5 @@
 ﻿using Amazon.Auth.AccessControlPolicy;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,9 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using UserProfileAPI.Dto;
+using UserProfileAPI.Service;
+using UserProfileAPI.Models;
+using System.Net;
 
 namespace UserProfileAPI.Controllers
 {
@@ -18,21 +22,40 @@ namespace UserProfileAPI.Controllers
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<ProfileController>();
 
+        private readonly IMapper _mapper;
+        private readonly UserProfileService _dataService;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ProfileController(IMapper mapper, UserProfileService dataService)
+        {
+            _mapper = mapper;
+            _dataService = dataService;
+        }
+
         /// <summary>
         /// Get UserProfile
         /// </summary>
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         [HttpGet]
-        [Authorize(Roles = "User,Admin")]
+        //[Authorize(Roles = "User,Admin")]
+        [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
         public async Task<IActionResult> GetProfile()
         {
+            var userId = User.Claims.First(x => x.Type == "UserId").ToString();
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(UserProfileDto));
+            var model = await _dataService.GetAsync(userId);
 
-            throw new NotImplementedException();
+            if(model == null)
+                return StatusCode(404, new ErrorDto("User not found", "404"));
+
+            var dto = _mapper.Map<UserProfile>(model);
+
+            return StatusCode(200, dto);
+
         }
 
         /// <summary>
@@ -43,16 +66,17 @@ namespace UserProfileAPI.Controllers
         [HttpGet("{id}")]
         [AllowAnonymous]
         [SwaggerResponse(statusCode: 200, type: typeof(UserProfilePreviewDto), description: "OK")]
-        [SwaggerResponse(statusCode: 404, type: typeof(UserProfilePreviewDto), description: "OK")]
+        [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "OK")]
         public async Task<IActionResult> GetProfileId([FromRoute(Name = "id")] string id)
         {
+            var model =  await _dataService.GetAsync(id);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(UserProfileDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
+            if (model == null)
+                return StatusCode(404, new ErrorDto("User not found", "404"));
 
-            throw new NotImplementedException();
+            var dto = _mapper.Map<UserProfilePreviewDto>(model);
+
+            return StatusCode(200, dto);
         }
 
         /// <summary>
@@ -62,14 +86,19 @@ namespace UserProfileAPI.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         [HttpPost]
-        [Authorize(Roles = "Service")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "Service")]
         [SwaggerResponse(statusCode: 201, type: typeof(string), description: "Created")]
-        public async Task<IActionResult> PostProfile()
+        public async Task<IActionResult> PostProfile([FromBody] CreateProfileDto createdto)
         {
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(201, default(string));
+            var userProfile = new UserProfile() { 
+                AvatarPath = "default.jpg",
+                Name = createdto.Name,
+                Email = createdto.Email
+            };
 
-            throw new NotImplementedException();
+            var model = await _dataService.CreateAsync(userProfile);
+            return StatusCode(201, model);
         }
 
         /// <summary>
@@ -79,16 +108,20 @@ namespace UserProfileAPI.Controllers
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         [HttpPut]
-        [Authorize(Roles = "User,Admin")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "User,Admin")]
         [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
         public async Task<IActionResult> PutProfileId([FromBody] UserProfileDto userProfileDto)
         {
             var userId = User.Claims.First(x => x.Type == "UserId").ToString();
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(UserProfileDto));
+            var model = await _dataService.UpdateAsync(userId, _mapper.Map<UserProfile>(userProfileDto));
 
-            throw new NotImplementedException();
+            if (model == null)
+                return StatusCode(404, new ErrorDto("User not found", "404"));
+
+            return StatusCode(200, model);
+
         }
     }
 }

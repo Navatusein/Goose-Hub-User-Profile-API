@@ -1,13 +1,19 @@
-namespace UserProfileAPI.Dto
-{ 
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using UserProfileAPI.Dto;
+
+namespace UserProfileAPI.Models
+{
     /// <summary>
     /// 
     /// </summary>
-    public class WishListDto
+    public class WishList
     {
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; } = null!;
 
         /// <summary>
@@ -21,16 +27,8 @@ namespace UserProfileAPI.Dto
         public bool IsPrivate { get; set; }
 
         /// <summary>
-        /// Gets or Sets Notify
-        /// </summary>
-        public bool Notify { get; set; }
-
-        /// <summary>
         /// Gets or Sets Content
         /// </summary>
         public ContentDto Content { get; set; } = null!;
-
-        
-
     }
 }

@@ -1,12 +1,16 @@
 ﻿using Amazon.Auth.AccessControlPolicy;
 using Amazon.SecurityToken.SAML;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using UserProfileAPI.Dto;
+using UserProfileAPI.Service;
 
 namespace UserProfileAPI.Controllers
 {
@@ -18,6 +22,18 @@ namespace UserProfileAPI.Controllers
     public class WishListController : ControllerBase
     {
         private static Serilog.ILogger Logger => Serilog.Log.ForContext<WishListController>();
+
+        private readonly UserProfileService _dataService;
+        private readonly IMapper _mapper;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public WishListController(IMapper mapper, UserProfileService dataService)
+        {
+            _mapper = mapper;
+            _dataService = dataService;
+        }
 
         /// <summary>
         /// Get WishList By Id
@@ -35,13 +51,6 @@ namespace UserProfileAPI.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> GetWishListId([FromRoute(Name = "id")] string id)
         {
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(WishListDto));
-            //TODO: Uncomment the next line to return response 403 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(403, default(ErrorDto));
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404, default(ErrorDto));
 
             throw new NotImplementedException();
         }

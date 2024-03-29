@@ -1,20 +1,21 @@
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace UserProfileAPI.Dto
-{ 
+namespace UserProfileAPI.Models
+{
     /// <summary>
     /// 
     /// </summary>
-    public class HistoryDto
+    public class Content
     {
         /// <summary>
         /// Gets or Sets ContentId
         /// </summary>
+        [Required]
         public string ContentId { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets ViewDate
+        /// Gets or Sets Priority
         /// </summary>
-        public DateTime ViewDate { get; set; }
+        public int Priority { get; set; }
     }
 }

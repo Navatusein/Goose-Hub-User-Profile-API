@@ -1,16 +1,17 @@
-using System.Text;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
+using UserProfileAPI.Dto;
 
-namespace UserProfileAPI.Dto
-{ 
-    /// <summary>
-    /// 
-    /// </summary>
-    public class UserProfileDto
+namespace UserProfileAPI.Models
+{
+    public class UserProfile
     {
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
         /// <summary>

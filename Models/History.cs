@@ -1,11 +1,13 @@
-using System.Text;
+﻿
+using System.ComponentModel.DataAnnotations;
+using UserProfileAPI.Dto;
 
-namespace UserProfileAPI.Dto
-{ 
+namespace UserProfileAPI.Models
+{
     /// <summary>
     /// 
     /// </summary>
-    public class HistoryDto
+    public class History
     {
         /// <summary>
         /// Gets or Sets ContentId
