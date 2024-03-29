@@ -3,9 +3,9 @@
 namespace UserProfileAPI.Models
 {
     /// <summary>
-    /// 
+    /// Model for store content in wish list
     /// </summary>
-    public class Content
+    public class WishListContent
     {
         /// <summary>
         /// Gets or Sets ContentId

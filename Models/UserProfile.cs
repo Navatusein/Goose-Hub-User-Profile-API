@@ -1,10 +1,13 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using System.ComponentModel.DataAnnotations;
-using UserProfileAPI.Dto;
+using UserProfileAPI.Dtos;
 
 namespace UserProfileAPI.Models
 {
+    /// <summary>
+    /// Model for store user profile data
+    /// </summary>
     public class UserProfile
     {
         /// <summary>
@@ -27,12 +30,6 @@ namespace UserProfileAPI.Models
         public string Email { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets AvatarUrl
-        /// </summary>
-        [Required]
-        public string AvatarUrl { get; set; } = null!;
-
-        /// <summary>
         /// Gets or Sets AvatarPath
         /// </summary>
         [Required]
@@ -41,18 +38,18 @@ namespace UserProfileAPI.Models
         /// <summary>
         /// Gets or Sets WishList
         /// </summary>
-        public List<WishListDto> WishList { get; set; } = null!;
+        public List<WishList> WishLists { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets HistoryList
         /// </summary>
-        public List<HistoryDto> HistoryList { get; set; } = null!;
+        public List<History> History { get; set; } = null!;
 
 
         /// <summary>
         /// Gets or Sets NotificationList
         /// </summary>
-        public List<NotificationDto> NotificationList { get; set; } = null!;
+        public List<Notification> Notifications { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets IsPrivate

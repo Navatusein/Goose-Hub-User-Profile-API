@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UserProfileAPI.Dto
+namespace UserProfileAPI.Dtos
 {
     /// <summary>
-    /// 
+    /// Dto for Notification
     /// </summary>
     public class NotificationDto
     {

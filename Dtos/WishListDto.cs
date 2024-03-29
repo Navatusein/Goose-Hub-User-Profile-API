@@ -1,14 +1,14 @@
-namespace UserProfileAPI.Dto
-{ 
+namespace UserProfileAPI.Dtos
+{
     /// <summary>
-    /// 
+    /// Dto for WishList
     /// </summary>
     public class WishListDto
     {
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        public string Id { get; set; } = null!;
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -28,7 +28,7 @@ namespace UserProfileAPI.Dto
         /// <summary>
         /// Gets or Sets Content
         /// </summary>
-        public ContentDto Content { get; set; } = null!;
+        public List<WishListContentDto> ContentList { get; set; } = null!;
 
         
 

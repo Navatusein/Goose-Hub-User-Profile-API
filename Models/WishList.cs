@@ -1,11 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using UserProfileAPI.Dto;
+using UserProfileAPI.Dtos;
 
 namespace UserProfileAPI.Models
 {
     /// <summary>
-    /// 
+    /// Model for store user wish list
     /// </summary>
     public class WishList
     {
@@ -14,7 +14,7 @@ namespace UserProfileAPI.Models
         /// </summary>
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = null!;
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -27,8 +27,13 @@ namespace UserProfileAPI.Models
         public bool IsPrivate { get; set; }
 
         /// <summary>
+        /// Gets or Sets Notify
+        /// </summary>
+        public bool Notify { get; set; }
+
+        /// <summary>
         /// Gets or Sets Content
         /// </summary>
-        public ContentDto Content { get; set; } = null!;
+        public List<WishListContent> Contents { get; set; } = null!;
     }
 }

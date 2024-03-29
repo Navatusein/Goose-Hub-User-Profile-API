@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations;
 namespace UserProfileAPI.MassTransit.Events
 {
     /// <summary>
-    /// 
+    /// Model for SendNotificationEvent
     /// </summary>
     [EntityName("user-profile-api-send-notification")]
+    [MessageUrn("SendNotificationEvent")]
     public class SendNotificationEvent
     {
         /// <summary>

@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace UserProfileAPI.Dto
+namespace UserProfileAPI.Dtos
 {
     /// <summary>
-    /// 
+    /// Model for error responses
     /// </summary>
     public class ErrorDto
     {

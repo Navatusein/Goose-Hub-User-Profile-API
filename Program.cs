@@ -10,6 +10,7 @@ using System.Text;
 using UserProfileAPI.AppMapping;
 using MassTransit;
 using UserProfileAPI.MassTransit.Consumers;
+using UserProfileAPI.Service.DataServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,16 +95,20 @@ builder.Services.AddSingleton<MinioService>();
 builder.Services.AddSingleton<MongoDbConnectionService>();
 builder.Services.AddSingleton<UserProfileService>();
 
+// Add MassTransit
 builder.Services.AddMassTransit(options =>
 {
     options.AddConsumer<SendNotificationConsumer>();
     options.AddConsumer<SendNotificationContentConsumer>();
+    options.AddConsumer<CreateUserProfileConsumer>();
 
     options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("user-profile-api", false));
 
     options.UsingRabbitMq((context, config) =>
     {
-        config.Host(builder.Configuration.GetSection("RabbitMq:Host").Get<string>(), "/", host =>
+        var host = builder.Configuration.GetSection("RabbitMq:Host").Get<string>();
+
+        config.Host(host, "/", host =>
         {
             host.Username(builder.Configuration.GetSection("RabbitMq:Username").Get<string>());
             host.Password(builder.Configuration.GetSection("RabbitMq:Password").Get<string>());

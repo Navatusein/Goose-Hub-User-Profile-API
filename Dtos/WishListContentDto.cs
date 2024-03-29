@@ -1,12 +1,12 @@
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace UserProfileAPI.Dto
-{ 
+namespace UserProfileAPI.Dtos
+{
     /// <summary>
-    /// 
+    /// Dto for WishListContent
     /// </summary>
-    public class ContentDto
+    public class WishListContentDto
     {
         /// <summary>
         /// Gets or Sets ContentId

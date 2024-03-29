@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
-using UserProfileAPI.Dto;
-using UserProfileAPI.Service;
+using UserProfileAPI.Dtos;
 using UserProfileAPI.Models;
 using System.Net;
+using UserProfileAPI.Service.DataServices;
 
 namespace UserProfileAPI.Controllers
 {
@@ -40,8 +40,7 @@ namespace UserProfileAPI.Controllers
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         [HttpGet]
-        //[Authorize(Roles = "User,Admin")]
-        [AllowAnonymous]
+        [Authorize(Roles = "User,Admin")]
         [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
         public async Task<IActionResult> GetProfile()
         {
@@ -52,7 +51,7 @@ namespace UserProfileAPI.Controllers
             if(model == null)
                 return StatusCode(404, new ErrorDto("User not found", "404"));
 
-            var dto = _mapper.Map<UserProfile>(model);
+            var dto = _mapper.Map<UserProfileDto>(model);
 
             return StatusCode(200, dto);
 
@@ -80,36 +79,13 @@ namespace UserProfileAPI.Controllers
         }
 
         /// <summary>
-        /// Create UserProfile
-        /// </summary>
-        /// <response code="201">Created</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="403">Forbidden</response>
-        [HttpPost]
-        [AllowAnonymous]
-        //[Authorize(Roles = "Service")]
-        [SwaggerResponse(statusCode: 201, type: typeof(string), description: "Created")]
-        public async Task<IActionResult> PostProfile([FromBody] CreateProfileDto createdto)
-        {
-            var userProfile = new UserProfile() { 
-                AvatarPath = "default.jpg",
-                Name = createdto.Name,
-                Email = createdto.Email
-            };
-
-            var model = await _dataService.CreateAsync(userProfile);
-            return StatusCode(201, model);
-        }
-
-        /// <summary>
         /// Update UserProfile
         /// </summary>
         /// <param name="userProfileDto"></param>
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         [HttpPut]
-        [AllowAnonymous]
-        //[Authorize(Roles = "User,Admin")]
+        [Authorize(Roles = "User,Admin")]
         [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
         public async Task<IActionResult> PutProfileId([FromBody] UserProfileDto userProfileDto)
         {
@@ -120,7 +96,9 @@ namespace UserProfileAPI.Controllers
             if (model == null)
                 return StatusCode(404, new ErrorDto("User not found", "404"));
 
-            return StatusCode(200, model);
+            var dto = _mapper.Map<UserProfileDto>(model);
+
+            return StatusCode(200, dto);
 
         }
     }

@@ -1,10 +1,10 @@
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace UserProfileAPI.Dto
-{ 
+namespace UserProfileAPI.Dtos
+{
     /// <summary>
-    /// 
+    /// Dto for UserProfile
     /// </summary>
     public class UserProfileDto
     {
@@ -40,18 +40,18 @@ namespace UserProfileAPI.Dto
         /// <summary>
         /// Gets or Sets WishList
         /// </summary>
-        public List<WishListDto> WishList { get; set; } = null!;
+        public List<WishListDto> WishLists { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets HistoryList
         /// </summary>
-        public List<HistoryDto> HistoryList { get; set; } = null!;
+        public List<HistoryDto> History { get; set; } = null!;
 
 
         /// <summary>
         /// Gets or Sets NotificationList
         /// </summary>
-        public List<NotificationDto> NotificationList { get; set; } = null!;
+        public List<NotificationDto> Notifications { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets IsPrivate

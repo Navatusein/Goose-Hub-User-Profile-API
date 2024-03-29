@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using UserProfileAPI.Controllers;
-using UserProfileAPI.Dto;
+using UserProfileAPI.Dtos;
 using UserProfileAPI.Models;
 using UserProfileAPI.Service;
 
 namespace UserProfileAPI.AppMapping
 {
     /// <summary>
-    /// UrlResolver
+    /// ImageUrlResolver
     /// </summary>
     public class ImageUrlResolver : IMemberValueResolver<object, object, string, string>
     {

@@ -1,11 +1,11 @@
 ﻿using MassTransit;
 using UserProfileAPI.MassTransit.Events;
-using UserProfileAPI.Service;
+using UserProfileAPI.Service.DataServices;
 
 namespace UserProfileAPI.MassTransit.Consumers
 {
     /// <summary>
-    /// 
+    /// Consumer for SendNotificationEvent
     /// </summary>
     public class SendNotificationConsumer: IConsumer<SendNotificationEvent>
     {
@@ -22,7 +22,7 @@ namespace UserProfileAPI.MassTransit.Consumers
         }
 
         /// <summary>
-        /// 
+        /// Consume
         /// </summary>
         public async Task Consume(ConsumeContext<SendNotificationEvent> context)
         {

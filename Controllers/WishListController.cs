@@ -9,8 +9,9 @@ using MongoDB.Driver;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
-using UserProfileAPI.Dto;
-using UserProfileAPI.Service;
+using UserProfileAPI.Dtos;
+using UserProfileAPI.Models;
+using UserProfileAPI.Service.DataServices;
 
 namespace UserProfileAPI.Controllers
 {
@@ -46,13 +47,26 @@ namespace UserProfileAPI.Controllers
         [HttpGet]
         [Route("{id}")]
         [AllowAnonymous]
-        [SwaggerResponse(statusCode: 200, type: typeof(WishListDto), description: "OK")]
+        [SwaggerResponse(statusCode: 200, type: typeof(WishList), description: "OK")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorDto), description: "Forbidden")]
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> GetWishListId([FromRoute(Name = "id")] string id)
         {
+            var userId = User.Claims.First(x => x.Type == "UserId").ToString();
 
-            throw new NotImplementedException();
+            var userProfile = await _dataService.GetUserProfileWishListAsync(id, userId);
+
+            if (userProfile == null)
+                return StatusCode(404, new ErrorDto("WishList not found", "404"));
+
+            var wishList = userProfile.WishLists[0];
+
+            if (wishList.IsPrivate && userProfile.Id != userId)
+                return StatusCode(403, new ErrorDto("WishList is private", "403"));
+
+            var dto = _mapper.Map<WishListDto>(wishList);
+
+            return StatusCode(200, dto);
         }
     }
 }

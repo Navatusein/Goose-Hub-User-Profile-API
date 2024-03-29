@@ -3,7 +3,7 @@
 namespace UserProfileAPI.Models
 {
     /// <summary>
-    /// 
+    /// Model for store user notifications
     /// </summary>
     public class Notification
     {

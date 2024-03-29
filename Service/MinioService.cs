@@ -4,7 +4,7 @@ using Minio.DataModel.Args;
 namespace UserProfileAPI.Service
 {
     /// <summary>
-    /// 
+    /// Service for work with Minio
     /// </summary>
     public class MinioService
     {

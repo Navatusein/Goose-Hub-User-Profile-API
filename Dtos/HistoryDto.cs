@@ -1,9 +1,9 @@
 using System.Text;
 
-namespace UserProfileAPI.Dto
-{ 
+namespace UserProfileAPI.Dtos
+{
     /// <summary>
-    /// 
+    /// Dto for History
     /// </summary>
     public class HistoryDto
     {

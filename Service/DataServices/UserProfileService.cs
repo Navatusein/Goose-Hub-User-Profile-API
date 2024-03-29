@@ -1,13 +1,13 @@
 ﻿using Minio.DataModel.Notification;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using UserProfileAPI.Dto;
+using UserProfileAPI.Dtos;
 using UserProfileAPI.Models;
 
-namespace UserProfileAPI.Service
+namespace UserProfileAPI.Service.DataServices
 {
     /// <summary>
-    /// 
+    /// UserProfile MongoDB service
     /// </summary>
     public class UserProfileService
     {
@@ -21,7 +21,6 @@ namespace UserProfileAPI.Service
         public UserProfileService(IConfiguration config, MongoDbConnectionService connectionService)
         {
             var collectionName = config.GetSection("MongoDB:CollectionUserName").Get<string>();
-
             _collection = connectionService.Database.GetCollection<UserProfile>(collectionName);
         }
 
@@ -72,42 +71,53 @@ namespace UserProfileAPI.Service
         /// <summary>
         /// Get UserProfile
         /// </summary>
-        public async Task<WishList> GetWishListAsync(string wishListId, string userProfileId)
+        public async Task<UserProfile> GetUserProfileWishListAsync(string wishListId, string userProfileId)
         {
-            throw new NotImplementedException();
+            var filter = Builders<UserProfile>.Filter.ElemMatch("WishLists", Builders<WishList>.Filter.Eq("Id", wishListId));
+            var projection = Builders<UserProfile>.Projection.Include("WishLists.$");
+
+            var model = await _collection.Find(filter).Project<UserProfile>(projection).SingleOrDefaultAsync();
+
+            return model;
         }
 
         /// <summary>
-        /// 
+        /// Add Content Notification
         /// </summary>
         public async Task<bool> AddContentNotificationAsync(string contentId, Notification notification)
         {
-            var filter = Builders<UserProfile>.Filter.ElemMatch("WishList", Builders<WishList>.Filter.And(
+            var filter = Builders<UserProfile>.Filter.ElemMatch("WishLists", Builders<WishList>.Filter.And(
                 Builders<WishList>.Filter.Eq("Notify", true),
-                Builders<WishList>.Filter.ElemMatch("Content", Builders<Content>.Filter.Eq("ContentId", contentId))
+                Builders<WishList>.Filter.ElemMatch("Contents", Builders<WishListContent>.Filter.Eq("ContentId", contentId))
             ));
 
-            var update = Builders<UserProfile>.Update.Push("NotificationList", notification);
+            var update = Builders<UserProfile>.Update.Push("Notifications", notification);
 
             var updateOptions = new UpdateOptions { IsUpsert = false };
 
             var result = await _collection.UpdateManyAsync(filter, update, updateOptions);
-            return true;
+
+            if (result.IsModifiedCountAvailable && result.ModifiedCount > 0)
+                return true;
+
+            return false;
         }
 
         /// <summary>
-        /// 
+        /// Add Notification
         /// </summary>
         public async Task<bool> AddNotificationAsync(string userProfileId, Notification notification)
         {
             var filter = Builders<UserProfile>.Filter.Eq("Id", userProfileId);
-
-            var update = Builders<UserProfile>.Update.Push("NotificationList", notification);
-
+            var update = Builders<UserProfile>.Update.Push("Notifications", notification);
             var updateOptions = new UpdateOptions { IsUpsert = false };
 
             var result = await _collection.UpdateManyAsync(filter, update, updateOptions);
-            return true;
+
+            if (result.IsModifiedCountAvailable && result.ModifiedCount > 0)
+                return true;
+
+            return false;
         }
     }
 }

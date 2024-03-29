@@ -1,11 +1,11 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
-using UserProfileAPI.Dto;
+using UserProfileAPI.Dtos;
 
 namespace UserProfileAPI.Models
 {
     /// <summary>
-    /// 
+    /// Model for store browsing history
     /// </summary>
     public class History
     {

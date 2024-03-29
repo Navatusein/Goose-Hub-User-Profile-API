@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using MongoDB.Bson;
 using System.Xml.Linq;
-using UserProfileAPI.Dto;
+using UserProfileAPI.Dtos;
 using UserProfileAPI.Models;
 using UserProfileAPI.Service;
 
 namespace UserProfileAPI.AppMapping
 {
     /// <summary>
-    /// 
+    /// AppMappingService
     /// </summary>
     public class AppMappingService : Profile
     {
@@ -24,7 +24,7 @@ namespace UserProfileAPI.AppMapping
                 .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom<ImageUrlResolver, string>(src => src.AvatarPath))
                 .ReverseMap();
 
-            CreateMap<Content, ContentDto>()
+            CreateMap<WishListContent, WishListContentDto>()
                 .ReverseMap();
 
             CreateMap<History, HistoryDto>()
