@@ -8,6 +8,24 @@ namespace UserProfileAPI.Dtos
     public class ErrorDto
     {
         /// <summary>
+        /// Constructor
+        /// </summary>
+        public ErrorDto(string message, string code)
+        {
+            Id = Guid.NewGuid().ToString();
+            Message = message;
+            Code = code;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ErrorDto()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
+        /// <summary>
         /// Gets or Sets Id
         /// </summary>
         [Required]
@@ -24,28 +42,5 @@ namespace UserProfileAPI.Dtos
         /// </summary>
         [Required]
         public string Code { get; set; } = null!;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="code"></param>
-        public ErrorDto(string message, string code)
-        {
-            Id = Guid.NewGuid().ToString();
-            Message = message;
-            Code = code;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public ErrorDto()
-        {
-            Id = Guid.NewGuid().ToString();
-            Message = string.Empty;
-            Code = string.Empty;
-        }
-
     }
 }
