@@ -36,6 +36,40 @@ namespace UserProfileAPI.Service
         }
 
         /// <summary>
+        /// Upload image to MinIO
+        /// </summary>
+        public async Task<string> UploadAvatar(IFormFile file)
+        {
+            string extension = Path.GetExtension(file.FileName);
+            string objectName = Guid.NewGuid().ToString() + extension;
+
+            var stream = file.OpenReadStream();
+
+            var putObjectArgs = new PutObjectArgs()
+                .WithBucket(_avatarBucket)
+                .WithObject(objectName)
+                .WithStreamData(stream)
+                .WithObjectSize(stream.Length)
+                .WithContentType(file.ContentType);
+
+            await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
+
+            return objectName;
+        }
+
+        /// <summary>
+        /// Remove image from MinIO
+        /// </summary>
+        public async Task RemoveAvatar(string path)
+        {
+            var removeObjectArgs = new RemoveObjectArgs()
+                .WithBucket(_avatarBucket)
+                .WithObject(path);
+
+            await _minioClient.RemoveObjectAsync(removeObjectArgs).ConfigureAwait(false);
+        }
+
+        /// <summary>
         /// Generate presigned url 
         /// </summary>
         public async Task<string> GetPresignedUrl(string bucketName, string objectPath)

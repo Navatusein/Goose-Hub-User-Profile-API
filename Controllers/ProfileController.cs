@@ -44,11 +44,11 @@ namespace UserProfileAPI.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
         public async Task<IActionResult> GetProfile()
         {
-            var userId = User.Claims.First(x => x.Type == "UserId").ToString();
+            var userId = User.Claims.First(x => x.Type == "UserId").Value.ToString();
 
-            var model = await _dataService.GetAsync(userId);
+            var model = await _dataService.GetByIdAsync(userId);
 
-            if(model == null)
+            if (model == null)
                 return StatusCode(404, new ErrorDto("User not found", "404"));
 
             var dto = _mapper.Map<UserProfileDto>(model);
@@ -68,7 +68,7 @@ namespace UserProfileAPI.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "OK")]
         public async Task<IActionResult> GetProfileId([FromRoute(Name = "id")] string id)
         {
-            var model =  await _dataService.GetAsync(id);
+            var model =  await _dataService.GetByIdAsync(id);
 
             if (model == null)
                 return StatusCode(404, new ErrorDto("User not found", "404"));
@@ -89,7 +89,7 @@ namespace UserProfileAPI.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
         public async Task<IActionResult> PutProfileId([FromBody] UserProfileDto userProfileDto)
         {
-            var userId = User.Claims.First(x => x.Type == "UserId").ToString();
+            var userId = User.Claims.First(x => x.Type == "UserId").Value.ToString();
 
             var model = await _dataService.UpdateAsync(userId, _mapper.Map<UserProfile>(userProfileDto));
 

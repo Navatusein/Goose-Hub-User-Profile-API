@@ -37,7 +37,7 @@ namespace UserProfileAPI.MassTransit.Consumers
                 Email = message.Email,
                 WishLists = new List<WishList>(),
                 History = new List<History>(),
-                Notifications = new List<Notification>()
+                Notifications = new List<Notification>(),
             };
 
             var model = await _dataService.CreateAsync(userProfile);

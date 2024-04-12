@@ -27,7 +27,7 @@ namespace UserProfileAPI.Service.DataServices
         /// <summary>
         /// Get UserProfile
         /// </summary>
-        public async Task<UserProfile> GetAsync(string id)
+        public async Task<UserProfile> GetByIdAsync(string id)
         {
             var filter = Builders<UserProfile>.Filter.Eq("Id", id);
             var model = await _collection.Find(filter).FirstOrDefaultAsync();
@@ -118,6 +118,32 @@ namespace UserProfileAPI.Service.DataServices
                 return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Add Avatar
+        /// </summary>
+        public async Task<bool> AddAvatarAsync(string id, string filePath)
+        {
+            var filter = Builders<UserProfile>.Filter.Eq("Id", id);
+            var update = Builders<UserProfile>.Update.Set("AvatarPath", filePath);
+
+            var result = await _collection.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
+        }
+
+        /// <summary>
+        /// Remove Avatar
+        /// </summary>
+        public async Task<bool> RemoveAvatarAsync(string id)
+        {
+            var filter = Builders<UserProfile>.Filter.Eq("Id", id);
+            var update = Builders<UserProfile>.Update.Set<string?>("AvatarPath", null);
+
+            var result = await _collection.UpdateOneAsync(filter, update);
+
+            return result.ModifiedCount > 0;
         }
     }
 }

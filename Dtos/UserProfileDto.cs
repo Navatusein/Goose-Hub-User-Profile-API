@@ -26,6 +26,11 @@ namespace UserProfileAPI.Dtos
         public string Email { get; set; } = null!;
 
         /// <summary>
+        /// Gets or Sets Email
+        /// </summary>
+        public DateOnly? Birthday { get; set; }
+
+        /// <summary>
         /// Gets or Sets AvatarUrl
         /// </summary>
         [Required]

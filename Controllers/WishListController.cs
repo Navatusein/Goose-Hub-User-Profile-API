@@ -52,7 +52,7 @@ namespace UserProfileAPI.Controllers
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> GetWishListId([FromRoute(Name = "id")] string id)
         {
-            var userId = User.Claims.First(x => x.Type == "UserId").ToString();
+            var userId = User.Claims.First(x => x.Type == "UserId").Value.ToString();
 
             var userProfile = await _dataService.GetUserProfileWishListAsync(id, userId);
 
