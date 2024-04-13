@@ -33,14 +33,12 @@ namespace UserProfileAPI.Dtos
         /// <summary>
         /// Gets or Sets AvatarUrl
         /// </summary>
-        [Required]
-        public string AvatarUrl { get; set; } = null!;
+        public string? AvatarUrl { get; set; }
 
         /// <summary>
         /// Gets or Sets AvatarPath
         /// </summary>
-        [Required]
-        public string AvatarPath { get; set; } = null!;
+        public string? AvatarPath { get; set; }
 
         /// <summary>
         /// Gets or Sets WishList

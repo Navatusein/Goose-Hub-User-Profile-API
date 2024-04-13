@@ -37,8 +37,7 @@ namespace UserProfileAPI.Models
         /// <summary>
         /// Gets or Sets AvatarPath
         /// </summary>
-        [Required]
-        public string AvatarPath { get; set; } = null!;
+        public string? AvatarPath { get; set; } = null!;
 
         /// <summary>
         /// Gets or Sets WishList

@@ -35,6 +35,16 @@ namespace UserProfileAPI.Service.DataServices
         }
 
         /// <summary>
+        /// Get UserProfiles By Ids
+        /// </summary>
+        public async Task<List<UserProfile>> GetByIdsAsync(List<string> ids)
+        {
+            var filter = Builders<UserProfile>.Filter.In("Id", ids);
+            var models = await _collection.Find(filter).ToListAsync();
+            return models;
+        }
+
+        /// <summary>
         /// Create UserProfile
         /// </summary>
         public async Task<UserProfile> CreateAsync(UserProfile model)
@@ -69,7 +79,7 @@ namespace UserProfileAPI.Service.DataServices
         }
 
         /// <summary>
-        /// Get UserProfile
+        /// Get Wishlist
         /// </summary>
         public async Task<UserProfile> GetUserProfileWishListAsync(string wishListId, string userProfileId)
         {

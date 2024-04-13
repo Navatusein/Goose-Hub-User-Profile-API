@@ -62,20 +62,17 @@ namespace UserProfileAPI.Controllers
         /// </summary>
         /// <response code="200">OK</response>
         /// <response code="404">Not Found</response>
-        [HttpGet("{id}")]
+        [HttpPost]
+        [Route("ids")]
         [AllowAnonymous]
-        [SwaggerResponse(statusCode: 200, type: typeof(UserProfilePreviewDto), description: "OK")]
+        [SwaggerResponse(statusCode: 200, type: typeof(List<UserProfilePreviewDto>), description: "OK")]
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "OK")]
-        public async Task<IActionResult> GetProfileId([FromRoute(Name = "id")] string id)
+        public async Task<IActionResult> GetProfileId([FromBody] List<string> ids)
         {
-            var model =  await _dataService.GetByIdAsync(id);
+            var models = await _dataService.GetByIdsAsync(ids);
+            var dtos = models.Select(x => _mapper.Map<UserProfilePreviewDto>(x)).ToList();
 
-            if (model == null)
-                return StatusCode(404, new ErrorDto("User not found", "404"));
-
-            var dto = _mapper.Map<UserProfilePreviewDto>(model);
-
-            return StatusCode(200, dto);
+            return StatusCode(200, dtos);
         }
 
         /// <summary>

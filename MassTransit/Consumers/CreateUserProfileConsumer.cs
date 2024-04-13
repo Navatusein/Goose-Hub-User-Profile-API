@@ -32,7 +32,6 @@ namespace UserProfileAPI.MassTransit.Consumers
 
             var userProfile = new UserProfile()
             {
-                AvatarPath = "default.jpg",
                 Name = message.Name,
                 Email = message.Email,
                 WishLists = new List<WishList>(),
