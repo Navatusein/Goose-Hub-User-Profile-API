@@ -12,7 +12,7 @@ namespace UserProfileAPI.Controllers
     /// <summary>
     /// Upload Controller
     /// </summary>
-    [Route("/api/user-profile-api/v1/upload")]
+    [Route("/v1/upload")]
     [ApiController]
     public class UploadController : ControllerBase
     {

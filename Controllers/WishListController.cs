@@ -18,7 +18,7 @@ namespace UserProfileAPI.Controllers
     /// <summary>
     /// WishList Controller
     /// </summary>
-    [Route("/api/user-profile-api/v1/wish-list")]
+    [Route("/v1/wish-list")]
     [ApiController]
     public class WishListController : ControllerBase
     {

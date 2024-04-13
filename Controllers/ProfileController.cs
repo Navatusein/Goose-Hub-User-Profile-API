@@ -16,7 +16,7 @@ namespace UserProfileAPI.Controllers
     /// <summary>
     /// Profile Controller
     /// </summary>
-    [Route("/api/user-profile-api/v1/profile")]
+    [Route("/v1/profile")]
     [ApiController]
     public class ProfileController : ControllerBase
     {
