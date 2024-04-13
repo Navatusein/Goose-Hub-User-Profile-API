@@ -58,7 +58,7 @@ namespace UserProfileAPI.Controllers
         }
 
         /// <summary>
-        /// Get UserProfile Preview By Id
+        /// Get UserProfile Preview By Ids
         /// </summary>
         /// <response code="200">OK</response>
         /// <response code="404">Not Found</response>
