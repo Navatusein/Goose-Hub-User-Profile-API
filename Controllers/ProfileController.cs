@@ -40,11 +40,15 @@ namespace UserProfileAPI.Controllers
         /// <response code="200">OK</response>
         /// <response code="401">Unauthorized</response>
         [HttpGet]
+        [Route("{id}")]
         [Authorize(Roles = "User,Admin")]
         [SwaggerResponse(statusCode: 200, type: typeof(UserProfileDto), description: "OK")]
-        public async Task<IActionResult> GetProfile()
+        public async Task<IActionResult> GetProfile([FromRoute] string id)
         {
             var userId = User.Claims.First(x => x.Type == "UserId").Value.ToString();
+
+            if (userId != id)
+                return StatusCode(403, new ErrorDto("Forbidden", "403"));
 
             var model = await _dataService.GetByIdAsync(userId);
 
