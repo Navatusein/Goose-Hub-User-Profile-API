@@ -18,10 +18,10 @@ namespace UserProfileAPI.AppMapping
         public AppMappingService()
         {
             CreateMap<UserProfile, UserProfilePreviewDto>()
-                .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom<ImageUrlResolver, string>(src => src.AvatarPath));
+                .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.AvatarPath));
 
             CreateMap<UserProfile, UserProfileDto>()
-                .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom<ImageUrlResolver, string>(src => src.AvatarPath))
+                .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom<ImageUrlResolver, string?>(src => src.AvatarPath))
                 .ReverseMap();
 
             CreateMap<WishListContent, WishListContentDto>()
