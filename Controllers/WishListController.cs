@@ -47,7 +47,7 @@ namespace UserProfileAPI.Controllers
         [HttpGet]
         [Route("{id}")]
         [AllowAnonymous]
-        [SwaggerResponse(statusCode: 200, type: typeof(WishList), description: "OK")]
+        [SwaggerResponse(statusCode: 200, type: typeof(WishListDto), description: "OK")]
         [SwaggerResponse(statusCode: 403, type: typeof(ErrorDto), description: "Forbidden")]
         [SwaggerResponse(statusCode: 404, type: typeof(ErrorDto), description: "Not Found")]
         public async Task<IActionResult> GetWishListId([FromRoute(Name = "id")] string id)

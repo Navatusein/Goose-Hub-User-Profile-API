@@ -28,7 +28,7 @@ namespace UserProfileAPI.Dtos
         /// <summary>
         /// Gets or Sets Content
         /// </summary>
-        public List<WishListContentDto> ContentList { get; set; } = null!;
+        public List<WishListContentDto> Contents { get; set; } = null!;
 
         
 
