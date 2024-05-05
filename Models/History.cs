@@ -17,6 +17,6 @@ namespace UserProfileAPI.Models
         /// <summary>
         /// Gets or Sets ViewDate
         /// </summary>
-        public DateTime ViewDate { get; set; }
+        public DateOnly ViewDate { get; set; }
     }
 }
