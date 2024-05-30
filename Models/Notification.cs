@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UserProfileAPI.Dto
+namespace UserProfileAPI.Models
 {
     /// <summary>
-    /// 
+    /// Model for store user notifications
     /// </summary>
-    public class NotificationDto
+    public class Notification
     {
         /// <summary>
         /// Gets or Sets Message
@@ -17,6 +17,6 @@ namespace UserProfileAPI.Dto
         /// Gets or Sets Link
         /// </summary>
         [Required]
-        public string? Link { get; set; }
+        public string? LinkRaw { get; set; }
     }
 }

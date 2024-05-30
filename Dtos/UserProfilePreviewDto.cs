@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UserProfileAPI.Dto
+namespace UserProfileAPI.Dtos
 {
     /// <summary>
-    /// 
+    /// Model for short version of UserProfile
     /// </summary>
     public class UserProfilePreviewDto
     {
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [Required]
-        public string Id { get; set; } = null!;
+        public string? Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
@@ -20,9 +19,13 @@ namespace UserProfileAPI.Dto
         public string Name { get; set; } = null!;
 
         /// <summary>
-        /// Gets or Sets IconUrl
+        /// Gets or Sets AvatarUrl
         /// </summary>
-        [Required]
-        public string IconUrl { get; set; } = null!;
+        public string? AvatarUrl { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or Sets AvatarPath
+        /// </summary>
+        public string? AvatarPath { get; set; } = null!;
     }
 }

@@ -7,6 +7,10 @@ using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 using System.Text;
+using UserProfileAPI.AppMapping;
+using MassTransit;
+using UserProfileAPI.MassTransit.Consumers;
+using UserProfileAPI.Service.DataServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,16 +84,63 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Configure Automapper
+builder.Services.AddAutoMapper(typeof(AppMappingService));
+builder.Services.AddTransient<ImageUrlResolver>();
+
+// Add Minio Service
+builder.Services.AddSingleton<MinioService>();
+
 // Add MongoDbConnectionService
 builder.Services.AddSingleton<MongoDbConnectionService>();
+builder.Services.AddSingleton<UserProfileService>();
+
+// Add MassTransit
+builder.Services.AddMassTransit(options =>
+{
+    options.AddConsumer<SendNotificationConsumer>();
+    options.AddConsumer<SendNotificationContentConsumer>();
+    options.AddConsumer<CreateUserProfileConsumer>();
+
+    options.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("user-profile-api", false));
+
+    options.UsingRabbitMq((context, config) =>
+    {
+        var host = builder.Configuration.GetSection("RabbitMq:Host").Get<string>();
+        var virtualHost = builder.Configuration.GetSection("RabbitMq:VirtualHost").Get<string>();
+
+        config.Host(host, virtualHost, host =>
+        {
+            host.Username(builder.Configuration.GetSection("RabbitMq:Username").Get<string>());
+            host.Password(builder.Configuration.GetSection("RabbitMq:Password").Get<string>());
+        });
+
+        config.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(option =>
+    {
+        option.RouteTemplate = "swagger/{documentName}/swagger.json";
+        option.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+        {
+            swaggerDoc.Servers = new List<OpenApiServer> {
+                new OpenApiServer {
+                    Url = builder.Configuration.GetSection("BaseUrl").Get<string?>() ?? $"{httpReq.Scheme}://{httpReq.Host.Value}/"
+                }
+            };
+        });
+    });
+
+    app.UseSwaggerUI(option =>
+    {
+        option.DocumentTitle = "User Profile API";
+    });
 }
 
 // Add Exception Handling Middleware
