@@ -12,6 +12,8 @@ namespace UserProfileAPI.Service
 
         private readonly IMinioClient _minioClient;
 
+        private readonly string _endpoint;
+
         private readonly string _avatarBucket;
 
         /// <summary>
@@ -19,16 +21,17 @@ namespace UserProfileAPI.Service
         /// </summary>
         public MinioService(IConfiguration config)
         {
-            var endpoint = config.GetSection("MinIO:Endpoint").Get<string>();
             var useSsl = config.GetSection("MinIO:UseSSL").Get<bool>();
             var region = config.GetSection("MinIO:Region").Get<string>();
             var accessKey = config.GetSection("MinIO:AccessKey").Get<string>();
             var secretKey = config.GetSection("MinIO:SecretKey").Get<string>();
 
+            _endpoint = config.GetSection("MinIO:Endpoint").Get<string>()!;
+
             _avatarBucket = config.GetSection("MinIO:AvatarBucket").Get<string>()!;
 
             _minioClient = new MinioClient()
-                .WithEndpoint(endpoint)
+                .WithEndpoint(new Uri(_endpoint))
                 .WithCredentials(accessKey, secretKey)
                 .WithRegion(region)
                 .WithSSL(useSsl)
@@ -74,12 +77,14 @@ namespace UserProfileAPI.Service
         /// </summary>
         public async Task<string> GetPresignedUrl(string bucketName, string objectPath)
         {
-            var presignedGetObjectArgs = new PresignedGetObjectArgs()
-                    .WithBucket(bucketName)
-                    .WithObject(objectPath)
-                    .WithExpiry(60 * 60 * 24 * 7);
+            //var presignedGetObjectArgs = new PresignedGetObjectArgs()
+            //        .WithBucket(bucketName)
+            //        .WithObject(objectPath)
+            //        .WithExpiry(60 * 60 * 24 * 7);
 
-            var presignedUrl = await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs).ConfigureAwait(false);
+            //var presignedUrl = await _minioClient.PresignedGetObjectAsync(presignedGetObjectArgs).ConfigureAwait(false);
+
+            var presignedUrl = $"{_endpoint}/{bucketName}/{objectPath}";
 
             return presignedUrl;
         }
